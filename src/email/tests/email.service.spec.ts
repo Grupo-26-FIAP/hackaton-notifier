@@ -1,39 +1,59 @@
+import { Test, TestingModule } from '@nestjs/testing';
 import { EmailService } from '../service/email.service';
 import { EmailRepository } from '../repository/email.repository';
 
 describe('EmailService', () => {
-  let emailService: EmailService;
-  let emailRepository: EmailRepository;
+  let service: EmailService;
+  let repository: EmailRepository;
 
-  beforeEach(() => {
-    emailRepository = {
-      sendMail: jest.fn(),
-      compileTemplate: jest.fn().mockReturnValue('<h1>Test</h1>'),
-    } as any;
+  const mockEmailRepository = {
+    sendMailWithTemplate: jest.fn().mockResolvedValue(undefined),
+  };
 
-    emailService = new EmailService(emailRepository);
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        EmailService,
+        {
+          provide: EmailRepository,
+          useValue: mockEmailRepository,
+        },
+      ],
+    }).compile();
+
+    service = module.get<EmailService>(EmailService);
+    repository = module.get<EmailRepository>(EmailRepository);
   });
 
-  it('should send email with compiled template', async () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should send video upload failure email with correct data', async () => {
     const dto = {
-      to: 'test@example.com',
-      subject: 'Welcome!',
-      templateData: {
-        name: 'João',
-        message: 'Seja bem-vindo!',
-      },
+      to: 'user@example.com',
+      name: 'João',
+      videoTitle: 'Demo Video',
+      supportUrl: 'https://support.example.com',
+      year: 2025,
     };
 
-    await emailService.sendEmail(dto);
+    const expectedSubject = 'Falha no upload do seu vídeo';
+    const expectedTemplate = 'video-upload-failure';
+    const expectedContext = {
+      name: dto.name,
+      videoTitle: dto.videoTitle,
+      supportUrl: dto.supportUrl,
+      year: dto.year,
+    };
 
-    expect(emailRepository.compileTemplate).toHaveBeenCalledWith(
-      'welcome',
-      dto.templateData,
-    );
-    expect(emailRepository.sendMail).toHaveBeenCalledWith(
+    await service.sendVideoUploadFailureEmail(dto);
+
+    expect(repository.sendMailWithTemplate).toHaveBeenCalledWith(
       dto.to,
-      dto.subject,
-      '<h1>Test</h1>',
+      expectedSubject,
+      expectedTemplate,
+      expectedContext,
     );
   });
 });

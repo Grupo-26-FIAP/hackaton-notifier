@@ -1,8 +1,6 @@
-export class SendEmailDto {
+export class EmailUploadFailureDto {
   to: string;
-  subject: string;
-  templateData: {
-    name: string;
-    message: string;
-  };
+  name: string;
+  videoTitle: string;
+  supportUrl: string;
 }

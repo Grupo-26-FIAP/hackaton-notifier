@@ -1,40 +1,56 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
-import * as hbs from 'handlebars';
+import { createTransport } from 'nodemailer';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as handlebars from 'handlebars';
 
 @Injectable()
 export class EmailRepository {
-  private transporter = nodemailer.createTransport({
+  private transporter = createTransport({
     host: process.env.MAILTRAP_HOST,
-    port: parseInt(process.env.MAILTRAP_PORT),
+    port: Number(process.env.MAILTRAP_PORT),
     auth: {
       user: process.env.MAILTRAP_USER,
       pass: process.env.MAILTRAP_PASS,
     },
   });
 
-  async sendMail(to: string, subject: string, html: string) {
-    return await this.transporter.sendMail({
-      from: '"No Reply" <noreply@example.com>',
+  async sendMailWithTemplate(
+    to: string,
+    subject: string,
+    templateName: string,
+    context: Record<string, any>,
+  ) {
+    const html = this.compileTemplate(templateName, context);
+
+    await this.transporter.sendMail({
+      from: '"Hackaton Notifier" <no-reply@hackaton.com>',
       to,
       subject,
       html,
     });
   }
 
-  compileTemplate(templateName: string, context: any): string {
-    const filePath = path.join(
-      process.cwd(),
-      'src',
-      'email',
-      'templates',
-      `${templateName}.hbs`,
-    );
+  private compileTemplate(
+    templateName: string,
+    context: Record<string, any>,
+  ): string {
+    const templatePath = this.resolveTemplatePath(`${templateName}.hbs`);
 
-    const source = fs.readFileSync(filePath, 'utf8');
-    const compiled = hbs.compile(source);
-    return compiled(context);
+    if (!fs.existsSync(templatePath)) {
+      throw new Error(`Template not found: ${templatePath}`);
+    }
+    const templateContent = fs.readFileSync(templatePath, 'utf8');
+    const template = handlebars.compile(templateContent);
+    return template(context);
+  }
+
+  private resolveTemplatePath(templateFile: string): string {
+    const basePath =
+      process.env.NODE_ENV === 'production'
+        ? path.join(__dirname, '..', 'templates') // dist/email/templates
+        : path.join(__dirname, '..', 'templates'); // src/email/templates
+
+    return path.join(basePath, templateFile);
   }
 }

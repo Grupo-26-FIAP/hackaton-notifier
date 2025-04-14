@@ -1,0 +1,64 @@
+<html lang='pt-BR'>
+  <head>
+    <meta charset='UTF-8' />
+    <title>Falha no Upload do Vídeo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        padding: 20px;
+      }
+      .container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        color: #e63946;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 20px;
+        margin-top: 20px;
+        background-color: #457b9d;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <h2>Olá, {{name}}!</h2>
+      <p>
+        Infelizmente, o upload do seu vídeo
+        <strong>"{{videoTitle}}"</strong>
+        falhou.
+      </p>
+      <p>
+        Isso pode ter acontecido por instabilidade na conexão ou por um problema
+        no nosso sistema.
+      </p>
+      <p>
+        Por favor, tente reenviar seu vídeo ou clique no botão abaixo para falar
+        com o nosso time de suporte.
+      </p>
+      <a href='{{supportUrl}}' class='button'>Entrar em Contato</a>
+      <div class='footer'>
+        &copy;
+        {{year}}
+        Hackaton Notifier - Todos os direitos reservados.
+      </div>
+    </div>
+  </body>
+</html>

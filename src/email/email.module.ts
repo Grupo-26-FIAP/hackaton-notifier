@@ -6,5 +6,6 @@ import { EmailRepository } from './repository/email.repository';
 @Module({
   controllers: [EmailController],
   providers: [EmailService, EmailRepository],
+  exports: [EmailService], // Exporta o EmailService para ser utilizado em outros módulos
 })
 export class EmailModule {}

@@ -22,7 +22,6 @@ export class EmailRepository {
     context: Record<string, any>,
   ) {
     const html = this.compileTemplate(templateName, context);
-
     await this.transporter.sendMail({
       from: '"Hackaton Notifier" <no-reply@hackaton.com>',
       to,

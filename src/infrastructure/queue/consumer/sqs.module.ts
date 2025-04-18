@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SqsModule } from '@ssut/nestjs-sqs';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { EmailUploadFailureConsumer } from './email-upload-failure.consumer';
 import { EmailModule } from '../../../email/email.module';
 import * as AWS from 'aws-sdk';
@@ -15,21 +15,19 @@ AWS.config.update({
   sessionToken: process.env.SESSION_TOKEN,
 });
 
-
-console.log(process.env.SQS_QUEUE_URL);
-console.log(process.env.AWS_REGION);
-
 @Module({
-  imports: [ConfigModule, EmailModule, 
+  imports: [
+    ConfigModule,
+    EmailModule,
     SqsModule.register({
-    consumers: [
-      {
-        name: 'upload-failure-queue',
-        queueUrl: process.env.SQS_QUEUE_URL,
-        region: process.env.AWS_REGION,
-      },
-    ],
-  }),
+      consumers: [
+        {
+          name: 'upload-failure-queue',
+          queueUrl: process.env.SQS_QUEUE_URL,
+          region: process.env.AWS_REGION,
+        },
+      ],
+    }),
   ],
   providers: [EmailUploadFailureConsumer],
 })

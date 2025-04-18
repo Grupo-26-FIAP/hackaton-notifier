@@ -8,12 +8,11 @@ export class EmailService {
 
   async sendVideoUploadFailureEmail(dto: EmailUploadFailureDto) {
     const context = {
+      to: dto.to,
       name: dto.name,
       videoTitle: dto.videoTitle,
       supportUrl: dto.supportUrl,
-      year: new Date().getFullYear(),
     };
-
     return this.emailRepository.sendMailWithTemplate(
       dto.to,
       'Falha no upload do seu vídeo',

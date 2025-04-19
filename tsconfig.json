@@ -20,5 +20,10 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*", "src/email/templates/**/*"]
+  "include": [
+    "src/**/*",
+    "src/email/templates/**/*",
+    "jest.config.ts",
+    "cucumber.js"
+  ]
 }

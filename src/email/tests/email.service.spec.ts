@@ -30,27 +30,21 @@ describe('EmailService', () => {
   });
 
   it('should send video upload failure email with correct data', async () => {
-    const dto = {
-      to: 'user@example.com',
-      name: 'João',
-      videoTitle: 'Demo Video',
-      supportUrl: 'https://support.example.com',
-      year: 2025,
-    };
+    const to = 'user@example.com';
+    const name = 'João';
+    const videoTitle = 'Demo Video';
+    const supportUrl = 'https://support.example.com';
 
-    const expectedSubject = 'Falha no upload do seu vídeo';
     const expectedTemplate = 'video-upload-failure';
-    const expectedContext = {
-      name: dto.name,
-      videoTitle: dto.videoTitle,
-      supportUrl: dto.supportUrl,
-      year: dto.year,
-    };
+    const expectedSubject = 'Falha no upload do seu vídeo';
 
-    await service.sendVideoUploadFailureEmail(dto);
+    const expectedContext = { to, name, videoTitle, supportUrl };
+
+    const emailUploadFailureDto = { to, name, videoTitle, supportUrl };
+    await service.sendVideoUploadFailureEmail(emailUploadFailureDto);
 
     expect(repository.sendMailWithTemplate).toHaveBeenCalledWith(
-      dto.to,
+      to,
       expectedSubject,
       expectedTemplate,
       expectedContext,

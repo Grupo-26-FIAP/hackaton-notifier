@@ -1,3 +1,6 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Grupo-26-FIAP_hackaton-notifier&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Grupo-26-FIAP_hackaton-notifier)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-26-FIAP_hackaton-notifier&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-26-FIAP_hackaton-notifier)
+
 # Hackaton Notifier
 
 Sistema de envio de notificações por e-mail para falhas no processo de upload de vídeos. Desenvolvido como parte do projeto do Tech Challenge da FIAP.

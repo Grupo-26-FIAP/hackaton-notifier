@@ -22,7 +22,7 @@ AWS.config.update({
     SqsModule.register({
       consumers: [
         {
-          name: 'upload-failure-queue',
+          name: 'failure-message-queue',
           queueUrl: process.env.SQS_QUEUE_URL,
           region: process.env.AWS_REGION,
         },

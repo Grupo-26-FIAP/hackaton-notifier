@@ -19,7 +19,7 @@ export class EmailUploadFailureConsumer {
     this.sqs = new AWS.SQS();
   }
 
-  @SqsMessageHandler('upload-failure-queue', false) // nome da fila SQS
+  @SqsMessageHandler('failure-message-queue', false) // nome da fila SQS
   async handleMessage(message: AWS.SQS.Message): Promise<void> {
     const data = JSON.parse(message.Body) as UploadFailureEvent;
 

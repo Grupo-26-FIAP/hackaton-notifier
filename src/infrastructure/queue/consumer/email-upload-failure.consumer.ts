@@ -27,7 +27,8 @@ export class EmailUploadFailureConsumer {
 
     await this.emailService.sendVideoUploadFailureEmail(data);
 
-    await this.sqs
+    try {
+      await this.sqs
       .deleteMessage({
         QueueUrl: process.env.SQS_QUEUE_URL,
         ReceiptHandle: message.ReceiptHandle,
@@ -36,5 +37,8 @@ export class EmailUploadFailureConsumer {
       .catch((error) => {
         console.log(error);
       });
+    } catch (error) {
+      console.error('Error deleting message from SQS:', error);
+    }
   }
 }

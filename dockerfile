@@ -10,6 +10,8 @@ COPY --chown=node:node . .
 
 RUN npm run build
 
+RUN npm run copy-assets
+
 ENV NODE_ENV=production
 
 RUN npm ci --only=production && npm cache clean --force

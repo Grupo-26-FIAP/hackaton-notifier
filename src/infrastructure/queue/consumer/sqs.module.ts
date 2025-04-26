@@ -10,9 +10,9 @@ config();
 
 AWS.config.update({
   region: process.env.AWS_REGION,
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  sessionToken: process.env.SESSION_TOKEN,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  sessionToken: process.env.AWS_SESSION_TOKEN,
 });
 
 @Module({

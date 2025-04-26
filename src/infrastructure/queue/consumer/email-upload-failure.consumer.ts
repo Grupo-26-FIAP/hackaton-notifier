@@ -4,10 +4,9 @@ import { EmailService } from '../../../email/service/email.service';
 import * as AWS from 'aws-sdk';
 
 type UploadFailureEvent = {
-  to: string;
-  name: string;
-  videoTitle: string;
-  supportUrl: string;
+  userId: string;
+  fileKey: string;
+  error: string;
 };
 
 @Injectable()
@@ -25,7 +24,12 @@ export class EmailUploadFailureConsumer {
 
     console.log(`Received message: ${message.Body}`);
 
-    await this.emailService.sendVideoUploadFailureEmail(data);
+    await this.emailService.sendVideoUploadFailureEmail({
+      name: data.userId,
+      to: data.userId,
+      videoTitle: data.fileKey,
+      supportUrl: 'https://support.example.com',
+    });
 
     try {
       await this.sqs

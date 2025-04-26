@@ -13,6 +13,10 @@ export class EmailService {
       videoTitle: dto.videoTitle,
       supportUrl: dto.supportUrl,
     };
+
+    console.log('Sending email with context:', context);
+
+
     return this.emailRepository.sendMailWithTemplate(
       dto.to,
       'Falha no upload do seu vídeo',
